@@ -1,0 +1,17 @@
+[package]
+name = "test_rsy"
+version = "0.1.0"
+edition = "2024"
+
+[dependencies]
+
+[profile.release]
+opt-level = "s"
+lto = "fat"
+codegen-units = 1
+panic = "abort"
+strip = true
+
+[[bin]]
+name = "pif-updater"
+path = "src/bin/pif-updater.rs"
