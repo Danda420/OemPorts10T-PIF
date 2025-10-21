@@ -81,7 +81,10 @@ sudo zypper install -y java-latest-openjdk android-tools zip unzip
 - This implementation will be updated whenever Google changes Play Integrity.  
 - `PIF.apk` is updated if keys/properties get banned, just run `pif-updater`.
 - Some of those Implementation Features is adjusted via PIF.apk bools/strings, so no need to worry about that.. i'll only enable and disable whats important for passing play integrity.
-- On devices running **SELinux Enforcing**, you may need to add rules to address denials related to this patch and the `pif-updater`.  
+* On devices running **SELinux Enforcing**, you may need to integrate additional SELinux rules for `pif-updater`. See the full guide below:
 
 ---
 
+### 🔗 [SELinux Integration Guide for Play Integrity Fix (PIF)](./sepolicy/sepolicy_guide.md)
+
+Refer to the above guide for complete steps to integrate the SELinux policy and file contexts required for `pif-updater` auto updater service in enforcing environments.
