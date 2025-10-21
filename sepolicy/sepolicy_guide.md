@@ -159,7 +159,7 @@ This final block contains the specific `allow` rules, `typetransition`, and `don
 ## 4. Finalizing and Verification
 1. **Flash and Test:** Flash the updated `partition` image containing the new `sepolicy` and `file_contexts`.
 
-2. **If Booting issue:** If you encountry booting issue, check ramoops for details
+2. **If Booting issue:** If you encounter booting issue, check ramoops for details
 Run this command when you can't boot, in recovery
 ```bash
 adb pull /sys/fs/pstore
@@ -172,3 +172,4 @@ then check the ramoops file, look for `sepolicy` it show on exactly which line y
 adb shell dmesg | grep "avc: denied"
 ```
 No denials related to `pif-updater` should appear if the policy is correctly integrated and the PIF.apk should be updated automatically when you cleanflashed if you have done this correctly.
+
