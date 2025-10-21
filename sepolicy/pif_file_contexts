@@ -1,4 +1,3 @@
 /system/bin/pif-updater		u:object_r:pif_updater_exec:s0
 /data/system/pif_tmp.apk	u:object_r:pif_data_file:s0
 /data/PIF.apk	u:object_r:pif_data_file:s0
-/data/system/readme_tmp.md	u:object_r:pif_data_file:s0

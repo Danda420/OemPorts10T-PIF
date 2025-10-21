@@ -11,6 +11,9 @@
 (roletype object_r pif_updater)
 (type pif_updater_exec)
 (roletype object_r pif_updater_exec)
+(type pif_data_file)
+(roletype object_r pif_data_file)
+
 
 ;;* From here onwards you can just add it to the very bottom of your_prefered_sepolicy.cil
 (typetransition init pif_updater_exec process pif_updater)

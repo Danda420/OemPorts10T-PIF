@@ -53,6 +53,8 @@ These definitions introduce the `pif_updater` domain and its executable type.
 (roletype object_r pif_updater)
 (type pif_updater_exec)
 (roletype object_r pif_updater_exec)
+(type pif_data_file)
+(roletype object_r pif_data_file)
 ```
 
 ---
