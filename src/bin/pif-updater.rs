@@ -86,6 +86,7 @@ fn main() {
         let _ = Command::new("pm").args(&["install", PIF]).status();
         let _ = Command::new("killall").arg("com.google.android.gms.unstable").status();
         let _ = Command::new("killall").arg("com.android.vending").status();
+        let _ = Command::new("pkill").arg("systemui").status();
         println!("PIF.apk updated!");
     } else {
         println!("Your PIF.apk version is already the latest one!");
