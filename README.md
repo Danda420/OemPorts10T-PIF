@@ -4,11 +4,11 @@ framework-level implementation to pass Play Integrity checks on Android ROMs.
 
 ## Features
 - **Bootloader Spoof**  
-  Uses an AOSP Keybox as a placeholder (for KeyAttestation app) but actually loads the keybox from `PIF.apk`.
+  Well.. we needed this now just to pass device integrity.
 - **GMS & Vending Properties Spoof**  
   Patches system properties to match certified devices for GMS & Vending.
 - **Spoof Provider**  
-  Spoofs AndroidKeystoreSpi.
+  Spoofs AndroidKeystoreSpi, even banned keybox can still get strong.
 - **Security Patch Spoof**  
   Spoofs Security Patch so that it passes strong integrity.
 - **Vending SDK 32 Spoof**  
