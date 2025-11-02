@@ -16,6 +16,14 @@ fn run(cmd: &str, args: &[&str]) -> String {
     String::from_utf8_lossy(&output.stdout).to_string()
 }
 
+fn silent_kill(process: &str) {
+    let _ = Command::new("killall")
+        .arg(process)
+        .stdout(Stdio::null())
+        .stderr(Stdio::null())
+        .status();
+}
+
 fn curl_pif() {
     let _ = run("curl", &[
         "-s",
@@ -47,6 +55,7 @@ fn fetch_pif() {
             .args(&["google.com", "80"])
             .stdin(Stdio::piped())
             .stdout(Stdio::null())
+            .stderr(Stdio::null())
             .spawn()
             .expect("failed to spawn nc");
 
@@ -84,8 +93,8 @@ fn main() {
     if pif_tmp_md5 != pif_md5 {
         let _ = fs::copy(PIF_TMP, PIF);
         let _ = Command::new("pm").args(&["install", PIF]).status();
-        let _ = Command::new("killall").arg("com.google.android.gms.unstable").status();
-        let _ = Command::new("killall").arg("com.android.vending").status();
+        silent_kill("com.google.android.gms.unstable");
+        silent_kill("com.android.vending");
         let _ = Command::new("pkill").arg("systemui").status();
         println!("PIF.apk updated!");
     } else {
