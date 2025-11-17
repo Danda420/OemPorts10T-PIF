@@ -97,33 +97,26 @@ This final block contains the specific `allow` rules, `typetransition`, and `don
 (typetransition init pif_updater_exec process pif_updater)
 (typetransition pif_updater system_data_file file pif_data_file)
 (dontaudit pif_updater pif_data_file (file (ioctl)))
+```
+
+These are based on your sepolicy denials and may vary between devices, ROMs, vendor, etc. You should address your own denials if after adding this doesn't boot
+```lisp
 (allow pif_updater hwservicemanager (file (open read)))
 (allow pif_updater pif_data_file (file (append create getattr ioctl link lock open read rename setattr unlink write)))
 (allow pif_updater selinuxfs (file (map open read write)))
 (allow pif_updater servicemanager (file (open read)))
-(allow pif_updater storage_feature_cloudctl (file (open read)))
 (allow pif_updater vndservicemanager (file (open read)))
-(allow pif_updater aee_aedv (file (open read)))
-(allow pif_updater crash_dump (file (open read)))
-(allow pif_updater hal_bootctl_default (file (open read)))
-(allow pif_updater hal_nfc_default (file (open read)))
 (allow pif_updater selinuxfs (dir (open read)))
 (allow pif_updater vold (file (open read)))
 (allow pif_updater hal_keymaster_default (file (read)))
 (allow pif_updater keystore (file (read)))
 (allow pif_updater system_suspend (file (read)))
-(allow pif_updater tran_hwinfo_binder (file (read)))
 (allow pif_updater hwservicemanager (dir (search)))
 (allow pif_updater servicemanager (dir (search)))
-(allow pif_updater storage_feature_cloudctl (dir (search)))
 (allow pif_updater tombstoned (file (read)))
-(allow pif_updater trancamserver (file (read)))
 (allow pif_updater vndservicemanager (dir (search)))
 (allow pif_updater vold (dir (search)))
-(allow pif_updater aee_aedv (dir (search)))
 (allow pif_updater crash_dump (dir (search)))
-(allow pif_updater hal_bootctl_default (dir (search)))
-(allow pif_updater hal_nfc_default (dir (search)))
 (allow pif_updater kernel (security (compute_av)))
 (allow pif_updater pif_updater_exec (file (entrypoint execute getattr map open read)))
 (allow pif_updater system_data_file (dir (add_name remove_name search write)))
@@ -174,4 +167,5 @@ then check the ramoops file, look for `sepolicy` it show on exactly which line y
 adb shell dmesg | grep "avc: denied"
 ```
 No denials related to `pif-updater` should appear if the policy is correctly integrated and the PIF.apk should be updated automatically when you cleanflashed if you have done this correctly.
+
 
