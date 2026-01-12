@@ -18,9 +18,9 @@
 ;;* From here onwards you can just add it to the very bottom of your_prefered_sepolicy.cil
 (typetransition init pif_updater_exec process pif_updater)
 (typetransition pif_updater system_data_file file pif_data_file)
-(dontaudit pif_updater pif_data_file (file (ioctl)))
 
 ;;* Allow sepolicy based on denials, these may vary for each device, ROMs, Vendor, etc. You should address your own denials
+(allowx pif_updater pif_data_file (ioctl file (0x5413)))
 (allow pif_updater hwservicemanager (file (open read)))
 (allow pif_updater pif_data_file (file (append create getattr ioctl link lock open read rename setattr unlink write)))
 (allow pif_updater selinuxfs (file (map open read write)))
@@ -63,4 +63,5 @@
 (allow system_server pif_updater (binder (call)))
 (allow init pif_updater (process (noatsecure rlimitinh siginh transition)))
 (allow init pif_updater_exec (file (execute getattr open read)))
+
 
