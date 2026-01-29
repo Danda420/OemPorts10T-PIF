@@ -96,6 +96,7 @@ This final block contains the specific `allow` rules, `typetransition`, and `don
 ```lisp
 (typetransition init pif_updater_exec process pif_updater)
 (typetransition pif_updater system_data_file file pif_data_file)
+(typetransition pif_updater system_data_root_file file pif_data_file)
 (dontaudit pif_updater pif_data_file (file (ioctl)))
 ```
 
@@ -145,6 +146,7 @@ These are based on your sepolicy denials and may vary between devices, ROMs, ven
 (allow pif_updater logd (file (open read)))
 (allow system_server pif_updater (fd (use)))
 (allow system_server pif_updater (binder (call)))
+(allow system_server system_data_root_file (file (read open getattr map)))
 (allow init pif_updater (process (noatsecure rlimitinh siginh transition)))
 (allow init pif_updater_exec (file (execute getattr open read)))
 ```
@@ -167,5 +169,6 @@ then check the ramoops file, look for `sepolicy` it show on exactly which line y
 adb shell dmesg | grep "avc: denied"
 ```
 No denials related to `pif-updater` should appear if the policy is correctly integrated and the PIF.apk should be updated automatically when you cleanflashed if you have done this correctly.
+
 
 
