@@ -1,5 +1,5 @@
 [package]
-name = "test_rsy"
+name = "pif-updater"
 version = "0.1.0"
 edition = "2024"
 
