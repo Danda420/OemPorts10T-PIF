@@ -3,18 +3,20 @@
 framework-level implementation to pass Play Integrity checks on Android ROMs.
 
 ## Features
-- **Bootloader Spoof**  
+- **Bootloader Spoof (Broken TEE devices are supported too!)**  
   Well.. we needed this now just to pass device integrity.
 - **GMS & Vending Properties Spoof**  
   Patches system properties to match certified devices for GMS & Vending.
 - **Spoof Provider**  
-  Spoofs AndroidKeystoreSpi, even banned keybox can still get strong.
+  Spoofs AndroidKeystoreSpi. (dead now...)
 - **Security Patch Spoof**  
   Spoofs Security Patch so that it passes strong integrity.
 - **Vending SDK 32 Spoof**  
   Just incase. (this wont get enabled usually)
 - **PIF.apk Updater**  
-  Automatically fetches updated PIF.apk from the cloud.
+  Automatically fetches the latest PIF.apk from this repository.
+- **Direct keybox.xml and pif.json support**  
+  Auto switches to .xml and .json if `persist.sys.oemports10t.utils.pif.autoupdate` is false.
 
 ---
 
@@ -73,6 +75,11 @@ sudo zypper install -y java-latest-openjdk android-tools zip unzip
    ```
    boot-framework.*
    ```
+
+---
+
+## How to use pif-updater?
+Check [this README](pif-updater.md). The commands and pif.json format is explained there.
 
 ---
 
