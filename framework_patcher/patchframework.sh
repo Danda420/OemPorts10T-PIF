@@ -9,7 +9,7 @@ fi
 
 apkeditor() {
     jarfile=$dirnow/tool/APKEditor.jar
-    javaOpts="-Xmx6056M -Dfile.encoding=utf-8 -Djdk.util.zip.disableZip64ExtraFieldValidation=true -Djdk.nio.zipfs.allowDotZipEntry=true"
+    javaOpts="-Xmx4096M -Dfile.encoding=utf-8 -Djdk.util.zip.disableZip64ExtraFieldValidation=true -Djdk.nio.zipfs.allowDotZipEntry=true"
 
     java $javaOpts -jar "$jarfile" "$@"
 }
