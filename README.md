@@ -7,8 +7,6 @@ framework-level implementation to pass Play Integrity checks on Android ROMs.
   Well.. we needed this now just to pass device integrity.
 - **GMS & Vending Properties Spoof**  
   Patches system properties to match certified devices for GMS & Vending.
-- **Spoof Provider**  
-  Spoofs AndroidKeystoreSpi. (dead now...)
 - **Security Patch Spoof**  
   Spoofs Security Patch so that it passes strong integrity.
 - **Vending SDK 32 Spoof**  
@@ -93,5 +91,6 @@ Check [this README](pif-updater.md). The commands and pif.json format is explain
 ---
 
 ### 🔗 [SELinux Integration Guide for Play Integrity Fix (PIF)](./sepolicy/sepolicy_guide.md)
+
 
 Refer to the above guide for complete steps to integrate the SELinux policy and file contexts required for `pif-updater` auto updater service in enforcing environments.
