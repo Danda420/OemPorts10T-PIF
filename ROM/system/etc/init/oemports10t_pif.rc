@@ -9,9 +9,9 @@ service pif_auto_updater /system/bin/pif-updater
     disabled
     oneshot
 
-on property:sys.boot_completed=1 && property:persist.sys.oemports10t.pif.autoupdate=true
+on property:sys.boot_completed=1 && property:persist.sys.oemports10t.utils.pif.autoupdate=true
     start pif_auto_updater
 
 # Use seclabeled su if ur lazy to do sepolicy
-# on property:sys.boot_completed=1 && property:persist.sys.oemports10t.pif.autoupdate=true
+# on property:sys.boot_completed=1 && property:persist.sys.oemports10t.utils.pif.autoupdate=true
 #    exec_background u:r:su:s0 root shell -- /system/bin/pif-updater
