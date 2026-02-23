@@ -32,19 +32,17 @@ instrumentationPatch() {
 
 genCertificate() {
    local descReg=$1
-   local attKeyReg=$2
-   local keyParamReg=$3
+   local argsReg=$2
+   local retReg=$3
    
    genCertificate="
-    iget-object v0, p0, Landroid/security/KeyStoreSecurityLevel;->mSecurityLevel:Landroid/system/keystore2/IKeystoreSecurityLevel;
+    invoke-static {p0, v0, ${descReg}, ${argsReg}}, Lcom/android/internal/util/danda/OemPorts10TUtils;->genCertificate(Ljava/lang/Object;Ljava/lang/Object;Landroid/system/keystore2/KeyDescriptor;Ljava/util/Collection;)Landroid/system/keystore2/KeyMetadata;
 
-    invoke-static {v0, ${descReg}, ${attKeyReg}, ${keyParamReg}}, Lcom/android/internal/util/danda/OemPorts10TUtils;->genCertificate(Landroid/system/keystore2/IKeystoreSecurityLevel;Landroid/system/keystore2/KeyDescriptor;Landroid/system/keystore2/KeyDescriptor;Ljava/util/Collection;)Landroid/system/keystore2/KeyMetadata;
+    move-result-object ${retReg}
 
-    move-result-object v0
+    if-eqz ${retReg}, :cond_skip_spoofing
 
-    if-eqz v0, :cond_skip_spoofing
-
-    return-object v0
+    return-object ${retReg}
 
     :cond_skip_spoofing"
 }
@@ -53,15 +51,22 @@ onGetKeyEntry() {
    local descReg=$1
    
    onGetKeyEntry="
-    invoke-static {${descReg}}, Lcom/android/internal/util/danda/OemPorts10TUtils;->onGetKeyEntry(Landroid/system/keystore2/KeyDescriptor;)Landroid/system/keystore2/KeyEntryResponse;
+    invoke-static {p0, v0, ${descReg}}, Lcom/android/internal/util/danda/OemPorts10TUtils;->onGetKeyEntry(Ljava/lang/Object;Ljava/lang/Object;Landroid/system/keystore2/KeyDescriptor;)Landroid/system/keystore2/KeyEntryResponse;
 
-    move-result-object v0
+    move-result-object ${descReg}
 
-    if-eqz v0, :cond_skip_spoofing
+    if-eqz ${descReg}, :cond_skip_spoofing
 
-    return-object v0
+    return-object ${descReg}
 
     :cond_skip_spoofing"
+}
+
+onDeleteKey() {
+   local descReg=$1
+   
+   onDeleteKey="
+    invoke-static {${descReg}}, Lcom/android/internal/util/danda/OemPorts10TUtils;->onDeleteKey(Landroid/system/keystore2/KeyDescriptor;)V"
 }
 
 expressions_fix() {
@@ -87,6 +92,7 @@ engineGetCertMethod=$(expressions_fix "$(grep 'engineGetCertificateChain(' frmwr
 newAppMethod1=$(expressions_fix "$(grep ' newApplication(Ljava/lang/ClassLoader;' frmwrk/$instrumentationsmali)")
 newAppMethod2=$(expressions_fix "$(grep ' newApplication(Ljava/lang/Class;' frmwrk/$instrumentationsmali)")
 getKeyEntryMethod=$(expressions_fix "$(grep ' getKeyEntry(Landroid/system/keystore2/KeyDescriptor;' frmwrk/$keystore2classfile)")
+deleteKeyMethod=$(expressions_fix "$(grep ' deleteKey(Landroid/system/keystore2/KeyDescriptor;' frmwrk/$keystore2classfile)")
 genKeyMethod=$(expressions_fix "$(grep ' generateKey(Landroid/system/keystore2/KeyDescriptor;' frmwrk/$keystorelvlclassfile)")
 
 sed -n "/^${engineGetCertMethod}/,/^\.end method/p" frmwrk/$keystorespiclassfile > tmp_keystore
@@ -100,6 +106,9 @@ sed -i "/^${newAppMethod2}/,/^\.end method/d" frmwrk/$instrumentationsmali
 
 sed -n "/^${getKeyEntryMethod}/,/^\.end method/p" frmwrk/$keystore2classfile > getKeyEntry_tmp
 sed -i "/^${getKeyEntryMethod}/,/^\.end method/d" frmwrk/$keystore2classfile
+
+sed -n "/^${deleteKeyMethod}/,/^\.end method/p" frmwrk/$keystore2classfile > delKey_tmp
+sed -i "/^${deleteKeyMethod}/,/^\.end method/d" frmwrk/$keystore2classfile
 
 sed -n "/^${genKeyMethod}/,/^\.end method/p" frmwrk/$keystorelvlclassfile > genKey_tmp
 sed -i "/^${genKeyMethod}/,/^\.end method/d" frmwrk/$keystorelvlclassfile
@@ -124,29 +133,39 @@ cat inst1 >> frmwrk/$instrumentationsmali
 cat inst2 >> frmwrk/$instrumentationsmali
 cat tmp_keystore >> frmwrk/$keystorespiclassfile
 
-descReg=$(cat getKeyEntry_tmp | grep -E ', "descriptor" ' | awk '{print $2}' | awk -F ',' '{print $1}')
+descReg=$(grep -r -E ', "descriptor" ' delKey_tmp | awk '{print $2}' | awk -F ',' '{print $1}')
+onDeleteKey $descReg
+awk -v payload="$onDeleteKey" '
+    /new-instance .*, Landroid\/security\/KeyStore2\$\$ExternalSyntheticLambda/ {
+        print payload
+        print ""
+    }
+    { print $0 }
+' delKey_tmp >> frmwrk/$keystore2classfile
+
+descReg=$(grep -r -E ', "descriptor" ' getKeyEntry_tmp | awk '{print $2}' | awk -F ',' '{print $1}')
 onGetKeyEntry $descReg
 awk -v payload="$onGetKeyEntry" '
-    /new-instance .*, Landroid\/security\/KeyStore2\$\$ExternalSyntheticLambda/ {
+    /invoke-virtual .*, Landroid\/security\/KeyStore2;->handleRemoteExceptionWithRetry/ {
         print payload
         print ""
     }
     { print $0 }
 ' getKeyEntry_tmp >> frmwrk/$keystore2classfile
 
-descReg=$(cat genKey_tmp | grep -E ', "descriptor" ' | awk '{print $2}' | awk -F ',' '{print $1}')
-attKeyReg=$(cat genKey_tmp | grep -E ', "attestationKey" ' | awk '{print $2}' | awk -F ',' '{print $1}')
-keyParamReg=$(cat genKey_tmp | grep -E 'Landroid/hardware/security/keymint/KeyParameter' | head -n 2 | grep '"args"' | awk '{print $2}' | awk -F ',' '{print $1}')
-genCertificate $descReg $attKeyReg $keyParamReg
+descReg=$(grep -r -E '.local' genKey_tmp | grep -E ', "descriptor"' | awk '{print $2}' | awk -F ',' '{print $1}')
+argsReg=$(grep -r -E '.local' genKey_tmp | grep -E ', "args"' | tail -n1 | awk '{print $2}' | awk -F ',' '{print $1}')
+retReg=$(grep -r -E 'return-object ' genKey_tmp | awk '{print $2}')
+genCertificate $descReg $argsReg $retReg
 awk -v payload="$genCertificate" '
-    /new-instance .*, Landroid\/security\/KeyStoreSecurityLevel\$\$ExternalSyntheticLambda/ {
+    /invoke-direct .*, Landroid\/security\/KeyStoreSecurityLevel;->handleExceptions/ {
         print payload
         print ""
     }
     { print $0 }
 ' genKey_tmp >> frmwrk/$keystorelvlclassfile
 
-rm -rf inst1 inst2 tmp_keystore getKeyEntry_tmp genKey_tmp
+rm -rf inst1 inst2 tmp_keystore getKeyEntry_tmp genKey_tmp delKey_tmp
 
 echo "repacking framework.jar classes"
 
