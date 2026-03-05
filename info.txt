@@ -1,17 +1,17 @@
-VERSION           : 2026.02.24
+VERSION           : 2026.03.05
 --------------------------------
 MANUFACTURER      : Google
-MODEL 	          : Pixel Tablet
-FINGERPRINT       : google/shiba_beta/shiba:16/CP11.251209.009.A1/14840729:user/release-keys
+MODEL 	          : Pixel Fold
+FINGERPRINT       : google/felix_beta/felix:CANARY/ZP11.260123.011/14822050:user/release-keys
 BRAND             : google
-PRODUCT           : shiba_beta
-DEVICE            : shiba
-RELEASE           : 16
-ID                : CP11.251209.009.A1
-INCREMENTAL       : 14840729
+PRODUCT           : felix_beta
+DEVICE            : felix
+RELEASE           : 202602
+ID                : ZP11.260123.011
+INCREMENTAL       : 14822050
 TYPE              : user
 TAGS              : release-keys
-SECURITY PATCH    : 2026-01-05
+SECURITY PATCH    : 2026-02-05
 FIRST API LEVEL   : 34
 SPOOF VENDING SDK : false
 KEYBOX            : CUSTOM (8)
