@@ -1,11 +1,11 @@
-VERSION           : 2026.03.05
+VERSION           : 2026.03.17
 --------------------------------
 MANUFACTURER      : Google
-MODEL 	          : Pixel Fold
-FINGERPRINT       : google/felix_beta/felix:CANARY/ZP11.260123.011/14822050:user/release-keys
+MODEL 	          : Pixel 10
+FINGERPRINT       : google/frankel_beta/frankel:CANARY/ZP11.260123.011/14822050:user/release-keys
 BRAND             : google
-PRODUCT           : felix_beta
-DEVICE            : felix
+PRODUCT           : frankel_beta
+DEVICE            : frankel
 RELEASE           : 202602
 ID                : ZP11.260123.011
 INCREMENTAL       : 14822050
