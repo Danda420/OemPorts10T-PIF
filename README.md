@@ -86,7 +86,7 @@ Check [this README](pif-updater.md). The commands and pif.json format is explain
 - This implementation will be updated whenever Google changes Play Integrity.  
 - `PIF.apk` is updated if keys/properties get banned, just run `pif-updater`.
 - Some of those Implementation Features is adjusted via PIF.apk bools/strings, so no need to worry about that.. i'll only enable and disable whats important for passing play integrity.
-* On devices running **SELinux Enforcing**, you may need to integrate additional SELinux rules for `pif-updater`. See the full guide below:
+* On devices running **SELinux Enforcing**, you may need to integrate additional SELinux rules for `pif-updater` or the implementation (for those user-added json and keyboxes). See the full guide below:
 
 ---
 

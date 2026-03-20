@@ -4,6 +4,7 @@
 # Use make pif updater as a oneshot service instead since we added its own sepolicy domains
 service pif_auto_updater /system/bin/pif-updater
     class main
+    seclabel u:r:pif_updater:s0
 	user root
 	group root system
     disabled
@@ -11,7 +12,3 @@ service pif_auto_updater /system/bin/pif-updater
 
 on property:sys.boot_completed=1 && property:persist.sys.oemports10t.utils.pif.autoupdate=true
     start pif_auto_updater
-
-# Use seclabeled su if ur lazy to do sepolicy
-# on property:sys.boot_completed=1 && property:persist.sys.oemports10t.utils.pif.autoupdate=true
-#    exec_background u:r:su:s0 root shell -- /system/bin/pif-updater

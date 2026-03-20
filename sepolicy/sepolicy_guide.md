@@ -10,145 +10,72 @@ This guide assumes you are working with a compiled SELinux policy in **Common In
 
 ## 2. File Contexts Integration
 
-File contexts are required to label the PIF binary and its related data files correctly.
+File contexts are required to label the PIF binary.
 
 **Action:** Merge the contents of `pif_file_contexts` into your device's primary `file_contexts` configuration file (e.g., `plat_file_contexts`).
 
 **`pif_file_contexts` Content:**
 
 ```plaintext
-/system/bin/pif-updater       u:object_r:pif_updater_exec:s0
-/data/system/pif_tmp.apk      u:object_r:pif_data_file:s0
-/data/PIF.apk                 u:object_r:pif_data_file:s0
-/data/system/readme_tmp.md    u:object_r:pif_data_file:s0
+/system/bin/pif-updater		u:object_r:pif_updater_exec:s0
 ```
 
-Also if you're using an unpacked (e.g., Mio Kitchen, RomTools, DNA, etc)
-At the root of your ROM Working directory find `/config` folder and on `system_file_context` ensure that pif-updater context is exec instead of system_file for example :
+Also if you're decompiling/unpacking the partition, at the root of your ROM Working directory find `/config` folder and on `system_file_context` ensure that pif-updater context is exec instead of system_file for example :
 
 ```plaintext
-/system/bin/pif-updater       u:object_r:pif_updater_exec:s0
+/system/system/bin/pif-updater u:object_r:pif_updater_exec:s0
 ```
 
 ---
 
 ## 3. CIL Policy Integration
 
-The CIL policy rules are broken down into three parts:
+Add the CIL policies from pif_sepolicy.cil into your partition ${partition}_sepolicy.cil (e.g., `plat_sepolicy.cil`)
 
-* Type definitions
-* Type attribute assignments
-* Permission rules (allow statements)
-
-### 3.1 Define New Types
-
-These definitions introduce the `pif_updater` domain and its executable type.
-
-**Action:** Insert the following CIL block into your primary `plat_sepolicy.cil` file where other types are defined.
-
-**CIL Snippet:**
-
-```lisp
+```plaintext
 (type pif_updater)
-(roletype object_r pif_updater)
 (type pif_updater_exec)
-(roletype object_r pif_updater_exec)
-(type pif_data_file)
-(roletype object_r pif_data_file)
-```
-
----
-
-### 3.2 Assign Type Attributes
-
-This step adds the newly defined types to existing `typeattributeset` collections. This allows `pif_updater` to inherit rules common to other processes and file types.
-
-**Action:** Locate the corresponding `typeattributeset` blocks in your `plat_sepolicy.cil` and add the new types.
-
-**CIL Snippets:**
-
-```lisp
-;; Add 'pif_updater' to the 'domain' typeattributeset
 (typeattributeset domain (pif_updater))
-
-;; Add PIF file types to 'file_type' and its subsets
-(typeattributeset file_type (pif_data_file pif_updater_exec))
-(typeattributeset data_file_type (pif_data_file))
+(typeattributeset coredomain (pif_updater)) 
 (typeattributeset exec_type (pif_updater_exec))
-
-;; Add 'pif_updater' to trusted and network-capable domains
-(typeattributeset mlstrustedobject (pif_updater))
-(typeattributeset netdomain (pif_updater))
-```
-
-**Note:** Search for `(typeattributeset domain (` in your master CIL file and add `pif_updater` to the list of types within that block.
-
----
-
-### 3.3 Add Core Permissions and Transitions
-
-This final block contains the specific `allow` rules, `typetransition`, and `dontaudit` rules that grant `pif_updater` the necessary permissions to function.
-
-**Action:** Append the following CIL block to the end of your `plat_sepolicy.cil` file at the very bottom or anywhere you prefer along with other allow statements
-
-**CIL Snippet:**
-
-```lisp
+(typeattributeset file_type (pif_updater_exec))
+(typeattributeset vendor_file_type (pif_updater_exec))
+(typepermissive pif_updater)
 (typetransition init pif_updater_exec process pif_updater)
-(typetransition pif_updater system_data_file file pif_data_file)
-(typetransition pif_updater system_data_root_file file pif_data_file)
-(dontaudit pif_updater pif_data_file (file (ioctl)))
-```
-
-These are based on your sepolicy denials and may vary between devices, ROMs, vendor, etc. You should address your own denials if after adding this doesn't boot
-```lisp
-(allow pif_updater hwservicemanager (file (open read)))
-(allow pif_updater pif_data_file (file (append create getattr ioctl link lock open read rename setattr unlink write)))
-(allow pif_updater selinuxfs (file (map open read write)))
-(allow pif_updater servicemanager (file (open read)))
-(allow pif_updater vndservicemanager (file (open read)))
-(allow pif_updater selinuxfs (dir (open read)))
-(allow pif_updater vold (file (open read)))
-(allow pif_updater hal_keymaster_default (file (read)))
-(allow pif_updater keystore (file (read)))
-(allow pif_updater system_suspend (file (read)))
-(allow pif_updater hwservicemanager (dir (search)))
-(allow pif_updater servicemanager (dir (search)))
-(allow pif_updater tombstoned (file (read)))
-(allow pif_updater vndservicemanager (dir (search)))
-(allow pif_updater vold (dir (search)))
-(allow pif_updater crash_dump (dir (search)))
-(allow pif_updater kernel (security (compute_av)))
-(allow pif_updater pif_updater_exec (file (entrypoint execute getattr map open read)))
-(allow pif_updater system_data_file (dir (add_name remove_name search write)))
-(allow pif_updater pif_updater (process (execmem)))
-(allow pif_updater vendor_file (file (execute execute_no_trans)))
-(allow pif_updater default_prop (file (getattr map open read)))
-(allow pif_updater system_prop (file (getattr map open read)))
-(allow pif_updater system_data_root_file (dir (add_name write)))
-(allow pif_updater system_data_root_file (file (create getattr open read setattr write)))
-(allow pif_updater package_service (service_manager (find)))
-(allow pif_updater system_server (binder (call transfer)))
-(allow pif_updater vendor_init (dir (search)))
-(allow pif_updater vendor_init (file (open read)))
-(allow pif_updater pif_updater (capability (sys_ptrace)))
-(allow pif_updater system_file (file (execute execute_no_trans getattr map open read)))
-(allow pif_updater servicemanager (binder (call)))
-(allow pif_updater kernel (dir (search)))
-(allow pif_updater kernel (file (open read)))
-(allow pif_updater init (dir (search)))
-(allow pif_updater init (file (open read)))
-(allow pif_updater ueventd (dir (search)))
-(allow pif_updater ueventd (file (open read)))
-(allow pif_updater prng_seeder (dir (search)))
-(allow pif_updater prng_seeder (file (open read)))
-(allow pif_updater logd (dir (search)))
-(allow pif_updater logd (file (open read)))
+(allow init pif_updater (process (transition)))
+(allow pif_updater pif_updater_exec (file (entrypoint open read execute getattr map)))
+(allow init pif_updater_exec (file (read getattr map execute open)))
+(allow init pif_updater (process (noatsecure rlimitinh siginh dyntransition)))
+(allow pif_updater self (capability (sys_admin dac_override dac_read_search chown fowner fsetid kill setgid setuid setpcap linux_immutable net_bind_service net_broadcast net_admin net_raw ipc_lock ipc_owner sys_module sys_rawio sys_chroot sys_ptrace sys_pacct sys_boot sys_nice sys_resource sys_time sys_tty_config mknod lease audit_write audit_control setfcap)))
+(allow pif_updater file_type (dir (create search getattr open read write add_name remove_name rmdir reparent rename lock mounton)))
+(allow pif_updater file_type (file (create open read write setattr getattr lock append unlink rename map execute execute_no_trans mounton)))
+(allow pif_updater dev_type (chr_file (read write open getattr ioctl map)))
+(allow pif_updater dev_type (blk_file (read write open getattr ioctl map)))
+(allow pif_updater fs_type (filesystem (mount unmount associate quotamod quotaget relabelfrom relabelto)))
+(allow pif_updater fs_type (dir (search getattr read open mounton)))
+(allow pif_updater fs_type (file (read write open getattr)))
+(allow pif_updater domain (process (sigkill signal getpgid getsched setsched)))
+(allow pif_updater shell_exec (file (read execute open execute_no_trans map)))
+(allow pif_updater toolbox_exec (file (read execute open execute_no_trans map)))
+(allow pif_updater vendor_toolbox_exec (file (read execute open execute_no_trans map)))
+(allow pif_updater service_manager_type (service_manager (add find list)))
+(allow pif_updater domain (binder (call transfer)))
+(allow domain pif_updater (binder (call transfer)))
+(allow netd pif_updater (fd (use)))
+(allow netd pif_updater (tcp_socket (read write setopt getopt)))
+(allow netd pif_updater (udp_socket (read write setopt getopt)))
+(allow netd pif_updater (unix_stream_socket (read write setopt getopt)))
+(allow system_server pif_updater (binder (call transfer)))
 (allow system_server pif_updater (fd (use)))
-(allow system_server pif_updater (binder (call)))
-(allow system_server system_data_root_file (file (read open getattr map)))
-(allow init pif_updater (process (noatsecure rlimitinh siginh transition)))
-(allow init pif_updater_exec (file (execute getattr open read)))
+(allow system_server pif_updater (fifo_file (write read getattr lock append)))
+(allow pif_updater power_service (service_manager (find)))
+(allow pif_updater mount_service (service_manager (find))) 
+(allow pif_updater property_type (property_service (set)))
+(allow pif_updater property_type (file (read open getattr map)))
+(allow pif_updater self (tcp_socket (create connect bind listen accept write read setopt getattr getopt shutdown)))
+(allow pif_updater self (udp_socket (create connect bind write read setopt getattr getopt shutdown)))
+(allow pif_updater self (rawip_socket (create connect bind write read setopt getattr getopt shutdown)))
+(allow kernel pif_updater (fd (use)))
 ```
 
 ---
@@ -169,6 +96,11 @@ then check the ramoops file, look for `sepolicy` it show on exactly which line y
 adb shell dmesg | grep "avc: denied"
 ```
 No denials related to `pif-updater` should appear if the policy is correctly integrated and the PIF.apk should be updated automatically when you cleanflashed if you have done this correctly.
-
+but if the user-added json and/or keyboxes doesn't work, you might need to address denials related to that on your own.. you can just use that command to get those denials then you can address it by using this template:
+```plaintext
+(allow scontext tcontext (tclass (whats denied)))
+;; for ex:
+(allow gmscore_app system_file (file (read open getattr)))
+```
 
 
