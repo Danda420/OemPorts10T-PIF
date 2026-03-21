@@ -1,17 +1,17 @@
-VERSION           : 2026.03.17
+VERSION           : 2026.03.21
 --------------------------------
 MANUFACTURER      : Google
-MODEL 	          : Pixel 10
-FINGERPRINT       : google/frankel_beta/frankel:CANARY/ZP11.260123.011/14822050:user/release-keys
+MODEL 	          : Pixel 9 Pro
+FINGERPRINT       : google/caiman_beta/caiman:CANARY/ZP11.260220.007/14993212:user/release-keys
 BRAND             : google
-PRODUCT           : frankel_beta
-DEVICE            : frankel
-RELEASE           : 202602
-ID                : ZP11.260123.011
-INCREMENTAL       : 14822050
+PRODUCT           : caiman_beta
+DEVICE            : caiman
+RELEASE           : 202603
+ID                : ZP11.260220.007
+INCREMENTAL       : 14993212
 TYPE              : user
 TAGS              : release-keys
-SECURITY PATCH    : 2026-02-05
+SECURITY PATCH    : 2026-03-05
 FIRST API LEVEL   : 34
 SPOOF VENDING SDK : false
 KEYBOX            : CUSTOM (8)
