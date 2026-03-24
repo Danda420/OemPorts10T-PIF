@@ -1,11 +1,11 @@
-VERSION           : 2026.03.21
+VERSION           : 2026.03.24
 --------------------------------
 MANUFACTURER      : Google
-MODEL 	          : Pixel 9 Pro
-FINGERPRINT       : google/caiman_beta/caiman:CANARY/ZP11.260220.007/14993212:user/release-keys
+MODEL 	          : Pixel 7
+FINGERPRINT       : google/panther_beta/panther:CANARY/ZP11.260220.007/14993212:user/release-keys
 BRAND             : google
-PRODUCT           : caiman_beta
-DEVICE            : caiman
+PRODUCT           : panther_beta
+DEVICE            : panther
 RELEASE           : 202603
 ID                : ZP11.260220.007
 INCREMENTAL       : 14993212
