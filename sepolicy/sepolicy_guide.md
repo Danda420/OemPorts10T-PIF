@@ -18,12 +18,16 @@ File contexts are required to label the PIF binary.
 
 ```plaintext
 /system/bin/pif-updater		u:object_r:pif_updater_exec:s0
+/system/bin/resetprop		u:object_r:pif_updater_exec:s0
+/system/bin/sensitiveprops.sh		u:object_r:pif_updater_exec:s0
 ```
 
 Also if you're decompiling/unpacking the partition, at the root of your ROM Working directory find `/config` folder and on `system_file_context` ensure that pif-updater context is exec instead of system_file for example :
 
 ```plaintext
 /system/system/bin/pif-updater u:object_r:pif_updater_exec:s0
+/system/system/bin/resetprop		u:object_r:pif_updater_exec:s0
+/system/system/bin/sensitiveprops.sh		u:object_r:pif_updater_exec:s0
 ```
 
 ---

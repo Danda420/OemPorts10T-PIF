@@ -1,1 +1,3 @@
 /system/bin/pif-updater		u:object_r:pif_updater_exec:s0
+/system/bin/resetprop		u:object_r:pif_updater_exec:s0
+/system/bin/sensitiveprops.sh		u:object_r:pif_updater_exec:s0

@@ -10,5 +10,8 @@ service pif_auto_updater /system/bin/pif-updater
     disabled
     oneshot
 
+on fs
+    exec_background u:r:pif_updater:s0 root root -- /system/bin/sensitiveprops.sh
+
 on property:sys.boot_completed=1 && property:persist.sys.oemports10t.utils.pif.autoupdate=true
     start pif_auto_updater
