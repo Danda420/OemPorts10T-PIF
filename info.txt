@@ -1,11 +1,11 @@
-VERSION           : 2026.03.24
+VERSION           : 2026.03.30
 --------------------------------
 MANUFACTURER      : Google
-MODEL 	          : Pixel 7
-FINGERPRINT       : google/panther_beta/panther:CANARY/ZP11.260220.007/14993212:user/release-keys
+MODEL 	          : Pixel 7 Pro
+FINGERPRINT       : google/cheetah_beta/cheetah:CANARY/ZP11.260220.007/14993212:user/release-keys
 BRAND             : google
-PRODUCT           : panther_beta
-DEVICE            : panther
+PRODUCT           : cheetah_beta
+DEVICE            : cheetah
 RELEASE           : 202603
 ID                : ZP11.260220.007
 INCREMENTAL       : 14993212
