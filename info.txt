@@ -1,11 +1,11 @@
-VERSION           : 2026.03.30
+VERSION           : 2026.04.01
 --------------------------------
 MANUFACTURER      : Google
-MODEL 	          : Pixel 7 Pro
-FINGERPRINT       : google/cheetah_beta/cheetah:CANARY/ZP11.260220.007/14993212:user/release-keys
+MODEL 	          : Pixel 8 Pro
+FINGERPRINT       : google/husky_beta/husky:CANARY/ZP11.260220.007/14993212:user/release-keys
 BRAND             : google
-PRODUCT           : cheetah_beta
-DEVICE            : cheetah
+PRODUCT           : husky_beta
+DEVICE            : husky
 RELEASE           : 202603
 ID                : ZP11.260220.007
 INCREMENTAL       : 14993212
