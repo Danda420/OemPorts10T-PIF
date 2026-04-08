@@ -1,11 +1,11 @@
-VERSION           : 2026.04.01
+VERSION           : 2026.04.08
 --------------------------------
 MANUFACTURER      : Google
-MODEL 	          : Pixel 8 Pro
-FINGERPRINT       : google/husky_beta/husky:CANARY/ZP11.260220.007/14993212:user/release-keys
+MODEL 	          : Pixel Tablet
+FINGERPRINT       : google/tangorpro_beta/tangorpro:CANARY/ZP11.260220.007/14993212:user/release-keys
 BRAND             : google
-PRODUCT           : husky_beta
-DEVICE            : husky
+PRODUCT           : tangorpro_beta
+DEVICE            : tangorpro
 RELEASE           : 202603
 ID                : ZP11.260220.007
 INCREMENTAL       : 14993212
