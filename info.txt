@@ -1,17 +1,17 @@
-VERSION           : 2026.04.08
+VERSION           : 2026.04.16
 --------------------------------
 MANUFACTURER      : Google
-MODEL 	          : Pixel Tablet
-FINGERPRINT       : google/tangorpro_beta/tangorpro:CANARY/ZP11.260220.007/14993212:user/release-keys
+MODEL 	          : Pixel 8 Pro
+FINGERPRINT       : google/husky_beta/husky:CANARY/ZP11.260320.007/15154667:user/release-keys
 BRAND             : google
-PRODUCT           : tangorpro_beta
-DEVICE            : tangorpro
-RELEASE           : 202603
-ID                : ZP11.260220.007
-INCREMENTAL       : 14993212
+PRODUCT           : husky_beta
+DEVICE            : husky
+RELEASE           : 202604
+ID                : ZP11.260320.007
+INCREMENTAL       : 15154667
 TYPE              : user
 TAGS              : release-keys
-SECURITY PATCH    : 2026-03-05
+SECURITY PATCH    : 2026-04-05
 FIRST API LEVEL   : 34
 SPOOF VENDING SDK : false
 KEYBOX            : CUSTOM (8)
