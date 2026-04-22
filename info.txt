@@ -1,11 +1,11 @@
-VERSION           : 2026.04.16
+VERSION           : 2026.04.22
 --------------------------------
 MANUFACTURER      : Google
-MODEL 	          : Pixel 8 Pro
-FINGERPRINT       : google/husky_beta/husky:CANARY/ZP11.260320.007/15154667:user/release-keys
+MODEL 	          : Pixel 10 Pro XL
+FINGERPRINT       : google/mustang_beta/mustang:CANARY/ZP11.260320.007/15154667:user/release-keys
 BRAND             : google
-PRODUCT           : husky_beta
-DEVICE            : husky
+PRODUCT           : mustang_beta
+DEVICE            : mustang
 RELEASE           : 202604
 ID                : ZP11.260320.007
 INCREMENTAL       : 15154667
