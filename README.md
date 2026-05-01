@@ -28,7 +28,7 @@ Clone this repository or download the ZIP archive and extract it.
 
 #### Arch Linux
 ```sh
-sudo pacman -Syu --needed jre-openjdk zip unzip android-sdk-build-tools
+sudo pacman -Syu yay --needed && yay -Syu jre-openjdk zip unzip android-sdk-build-tools --needed
 ```
 
 #### RHEL / Fedora / CentOS / Alma / Rocky
