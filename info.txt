@@ -1,11 +1,11 @@
-VERSION           : 2026.04.22
+VERSION           : 2026.05.01
 --------------------------------
 MANUFACTURER      : Google
-MODEL 	          : Pixel 10 Pro XL
-FINGERPRINT       : google/mustang_beta/mustang:CANARY/ZP11.260320.007/15154667:user/release-keys
+MODEL 	          : Pixel 10 Pro
+FINGERPRINT       : google/blazer_beta/blazer:CANARY/ZP11.260320.007/15154667:user/release-keys
 BRAND             : google
-PRODUCT           : mustang_beta
-DEVICE            : mustang
+PRODUCT           : blazer_beta
+DEVICE            : blazer
 RELEASE           : 202604
 ID                : ZP11.260320.007
 INCREMENTAL       : 15154667
