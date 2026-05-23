@@ -1,17 +1,17 @@
-VERSION           : 2026.05.01
+VERSION           : 2026.05.23
 --------------------------------
 MANUFACTURER      : Google
-MODEL 	          : Pixel 10 Pro
-FINGERPRINT       : google/blazer_beta/blazer:CANARY/ZP11.260320.007/15154667:user/release-keys
+MODEL 	          : Pixel 7
+FINGERPRINT       : google/panther_beta/panther:CANARY/ZP11.260417.009/15372612:user/release-keys
 BRAND             : google
-PRODUCT           : blazer_beta
-DEVICE            : blazer
-RELEASE           : 202604
-ID                : ZP11.260320.007
-INCREMENTAL       : 15154667
+PRODUCT           : panther_beta
+DEVICE            : panther
+RELEASE           : 202605
+ID                : ZP11.260417.009
+INCREMENTAL       : 15372612
 TYPE              : user
 TAGS              : release-keys
-SECURITY PATCH    : 2026-04-05
+SECURITY PATCH    : 2026-05-05
 FIRST API LEVEL   : 34
 SPOOF VENDING SDK : false
 KEYBOX            : CUSTOM (8)
