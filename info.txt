@@ -1,17 +1,17 @@
-VERSION           : 2026.05.23
+VERSION           : 2026.06.12
 --------------------------------
 MANUFACTURER      : Google
-MODEL 	          : Pixel 7
-FINGERPRINT       : google/panther_beta/panther:CANARY/ZP11.260417.009/15372612:user/release-keys
+MODEL 	          : Pixel 6
+FINGERPRINT       : google/oriole_beta/oriole:CANARY/ZP11.260515.009/15513807:user/release-keys
 BRAND             : google
-PRODUCT           : panther_beta
-DEVICE            : panther
-RELEASE           : 202605
-ID                : ZP11.260417.009
-INCREMENTAL       : 15372612
+PRODUCT           : oriole_beta
+DEVICE            : oriole
+RELEASE           : 202606
+ID                : ZP11.260515.009
+INCREMENTAL       : 15513807
 TYPE              : user
 TAGS              : release-keys
-SECURITY PATCH    : 2026-05-05
+SECURITY PATCH    : 2026-06-05
 FIRST API LEVEL   : 34
 SPOOF VENDING SDK : false
 KEYBOX            : CUSTOM (8)
