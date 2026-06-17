@@ -1,11 +1,11 @@
-VERSION           : 2026.06.12
+VERSION           : 2026.06.17
 --------------------------------
 MANUFACTURER      : Google
-MODEL 	          : Pixel 6
-FINGERPRINT       : google/oriole_beta/oriole:CANARY/ZP11.260515.009/15513807:user/release-keys
+MODEL 	          : Pixel 9a
+FINGERPRINT       : google/tegu_beta/tegu:CANARY/ZP11.260515.009/15513807:user/release-keys
 BRAND             : google
-PRODUCT           : oriole_beta
-DEVICE            : oriole
+PRODUCT           : tegu_beta
+DEVICE            : tegu
 RELEASE           : 202606
 ID                : ZP11.260515.009
 INCREMENTAL       : 15513807
