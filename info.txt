@@ -1,11 +1,11 @@
-VERSION           : 2026.06.17
+VERSION           : 2026.06.30
 --------------------------------
 MANUFACTURER      : Google
-MODEL 	          : Pixel 9a
-FINGERPRINT       : google/tegu_beta/tegu:CANARY/ZP11.260515.009/15513807:user/release-keys
+MODEL 	          : Pixel 9 Pro
+FINGERPRINT       : google/caiman_beta/caiman:CANARY/ZP11.260515.009/15513807:user/release-keys
 BRAND             : google
-PRODUCT           : tegu_beta
-DEVICE            : tegu
+PRODUCT           : caiman_beta
+DEVICE            : caiman
 RELEASE           : 202606
 ID                : ZP11.260515.009
 INCREMENTAL       : 15513807
