@@ -28,7 +28,7 @@ Clone this repository or download the ZIP archive and extract it.
 
 #### Arch Linux
 ```sh
-sudo pacman -Syu yay --needed && yay -Syu jre-openjdk zip unzip android-sdk-build-tools --needed
+sudo pacman -Syu --needed jre-openjdk zip unzip android-sdk-build-tools
 ```
 
 #### RHEL / Fedora / CentOS / Alma / Rocky
@@ -56,20 +56,22 @@ sudo zypper install -y java-latest-openjdk android-tools zip unzip
    - `ROM/system` → into your system partition  
    - `ROM/vendor` → into your vendor partition  
 
-2. Add the required properties from `ROM/build.prop` to your device’s `build.prop`.  
+2. Add the required properties from `ROM/build.prop` to your device’s `build.prop`.
 
-3. Place `framework.jar` inside the `framework_patcher` folder.  
+3. Add `liboemports_pif.so` to `/system/etc/public.libraries.txt`
 
-4. Run the patcher:
+4. Place `framework.jar` inside the `framework_patcher` folder.  
+
+5. Run the patcher:
    ```sh
    ./patchframework.sh
    ```
 
-5. Wait for the patching process to complete.  
+6. Wait for the patching process to complete.  
 
-6. Replace your system’s `framework.jar` with the patched version.  
+7. Replace your system’s `framework.jar` with the patched version.  
 
-7. Remove any files in system/framework named:
+8. Remove any files in system/framework named:
    ```
    boot-framework.*
    ```

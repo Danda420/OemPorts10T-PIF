@@ -80,6 +80,9 @@ Add the CIL policies from pif_sepolicy.cil into your partition ${partition}_sepo
 (allow pif_updater self (udp_socket (create connect bind write read setopt getattr getopt shutdown)))
 (allow pif_updater self (rawip_socket (create connect bind write read setopt getattr getopt shutdown)))
 (allow kernel pif_updater (fd (use)))
+(allow gmscore_app system_data_file (file (open)))
+(allow untrusted_app system_data_file (file (open)))
+(allow priv_app system_data_file (file (open)))
 ```
 
 ---
