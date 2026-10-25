@@ -186,7 +186,7 @@ argsReg=$(grep -r -E '.local' genKey_tmp | grep -E ', "args"' | tail -n1 | awk '
 retReg=$(grep -r -E 'return-object ' genKey_tmp | awk '{print $2}')
 genCertificate $esLamReg $descReg $argsReg $retReg
 awk -v payload="$genCertificate" '
-    /invoke-direct .*, Landroid\/security\/KeyStoreSecurityLevel;->handleExceptions/ {
+    /invoke-direct .*, Landroid\/security\/KeyStoreSecurityLevel;->(handleExceptions|retryBusyException)/ {
         print payload
         print ""
     }
