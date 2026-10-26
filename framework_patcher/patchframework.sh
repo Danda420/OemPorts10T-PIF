@@ -98,20 +98,15 @@ mv framework.jar frmwrk.jar
 
 echo "patching framework.jar"
 
-keystorespiclassfile=$(find frmwrk/ -name 'AndroidKeyStoreSpi.smali' -printf '%P\n')
 instrumentationsmali=$(find frmwrk/ -name "Instrumentation.smali"  -printf '%P\n')
 keystore2classfile=$(find frmwrk/ -name 'KeyStore2.smali' -printf '%P\n')
 keystorelvlclassfile=$(find frmwrk/ -name 'KeyStoreSecurityLevel.smali' -printf '%P\n')
 
-engineGetCertMethod=$(expressions_fix "$(grep 'engineGetCertificateChain(' frmwrk/$keystorespiclassfile)")
 newAppMethod1=$(expressions_fix "$(grep ' newApplication(Ljava/lang/ClassLoader;' frmwrk/$instrumentationsmali)")
 newAppMethod2=$(expressions_fix "$(grep ' newApplication(Ljava/lang/Class;' frmwrk/$instrumentationsmali)")
 getKeyEntryMethod=$(expressions_fix "$(grep ' getKeyEntry(Landroid/system/keystore2/KeyDescriptor;' frmwrk/$keystore2classfile)")
 deleteKeyMethod=$(expressions_fix "$(grep ' deleteKey(Landroid/system/keystore2/KeyDescriptor;' frmwrk/$keystore2classfile)")
 genKeyMethod=$(expressions_fix "$(grep ' generateKey(Landroid/system/keystore2/KeyDescriptor;' frmwrk/$keystorelvlclassfile)")
-
-sed -n "/^${engineGetCertMethod}/,/^\.end method/p" frmwrk/$keystorespiclassfile > tmp_keystore
-sed -i "/^${engineGetCertMethod}/,/^\.end method/d" frmwrk/$keystorespiclassfile
 
 sed -n "/^${newAppMethod1}/,/^\.end method/p" frmwrk/$instrumentationsmali > inst1
 sed -i "/^${newAppMethod1}/,/^\.end method/d" frmwrk/$instrumentationsmali
@@ -143,16 +138,8 @@ instrumentationPatch $instreg $instline
 echo "$instrumentationPatch" | sed -i "${inst2_insert}r /dev/stdin" inst2 2>/dev/null
 if grep -q "OemPorts10TUtils;->onNewApplication" inst2; then add_report "Patch 2 (Instrumentation: newApplication Class)" "success"; else add_report "Patch 2 (Instrumentation 2)" "failed"; fi
 
-kstoreline=$(expr $(grep -r ".line" tmp_keystore | head -n 1 | awk '{print $2}') - 2 2>/dev/null)
-certificatechainPatch $kstoreline
-echo "$certificatechainPatch" | sed -i '4r /dev/stdin' tmp_keystore 2>/dev/null
-if grep -q "OemPorts10TUtils;->onEngineGetCertificateChain" tmp_keystore; then add_report "Patch 3 (KeyStoreSpi: engineGetCert)" "success"; else add_report "Patch 3 (KeyStoreSpi: engineGetCert)" "failed"; fi
-
-
 cat inst1 >> frmwrk/$instrumentationsmali
 cat inst2 >> frmwrk/$instrumentationsmali
-cat tmp_keystore >> frmwrk/$keystorespiclassfile
-
 
 descReg=$(grep -r -E ', "descriptor" ' delKey_tmp | awk '{print $2}' | awk -F ',' '{print $1}')
 onDeleteKey $descReg
@@ -163,7 +150,7 @@ awk -v payload="$onDeleteKey" '
     }
     { print $0 }
 ' delKey_tmp >> frmwrk/$keystore2classfile
-if grep -q "OemPorts10TUtils;->onDeleteKey" frmwrk/$keystore2classfile; then add_report "Patch 4 (KeyStore2: deleteKey)" "success"; else add_report "Patch 4 (KeyStore2: deleteKey)" "failed"; fi
+if grep -q "OemPorts10TUtils;->onDeleteKey" frmwrk/$keystore2classfile; then add_report "Patch 3 (KeyStore2: deleteKey)" "success"; else add_report "Patch 4 (KeyStore2: deleteKey)" "failed"; fi
 
 esLamReg=$(grep ', Landroid/security/KeyStore2$$ExternalSyntheticLambda[0-9]*;$' getKeyEntry_tmp | awk '{print $2}' | awk -F ',' '{print $1}')
 descReg=$(grep -r -E ', "descriptor" ' getKeyEntry_tmp | awk '{print $2}' | awk -F ',' '{print $1}')
@@ -175,7 +162,7 @@ awk -v payload="$onGetKeyEntry" '
     }
     { print }
 ' getKeyEntry_tmp >> frmwrk/$keystore2classfile
-if grep -q "OemPorts10TUtils;->onGetKeyEntry" frmwrk/$keystore2classfile; then add_report "Patch 5 (KeyStore2: getKeyEntry)" "success"; else add_report "Patch 5 (KeyStore2: getKeyEntry)" "failed"; fi
+if grep -q "OemPorts10TUtils;->onGetKeyEntry" frmwrk/$keystore2classfile; then add_report "Patch 4 (KeyStore2: getKeyEntry)" "success"; else add_report "Patch 5 (KeyStore2: getKeyEntry)" "failed"; fi
 
 esLamReg=$(grep ', Landroid/security/KeyStoreSecurityLevel$$ExternalSyntheticLambda[0-9]*;$' genKey_tmp | awk '{print $2}' | awk -F ',' '{print $1}')
 descReg=$(grep -r -E '.local' genKey_tmp | grep -E ', "descriptor"' | awk '{print $2}' | awk -F ',' '{print $1}')
@@ -192,7 +179,7 @@ awk -v payload="$genCertificate" '
     }
     { print $0 }
 ' genKey_tmp >> frmwrk/$keystorelvlclassfile
-if grep -q "OemPorts10TUtils;->genCertificate" frmwrk/$keystorelvlclassfile; then add_report "Patch 6 (KeyStoreSecurityLevel: genKey)" "success"; else add_report "Patch 6 (KeyStoreSecurityLevel: genKey)" "failed"; fi
+if grep -q "OemPorts10TUtils;->genCertificate" frmwrk/$keystorelvlclassfile; then add_report "Patch 5 (KeyStoreSecurityLevel: genKey)" "success"; else add_report "Patch 6 (KeyStoreSecurityLevel: genKey)" "failed"; fi
 
 
 rm -rf inst1 inst2 tmp_keystore getKeyEntry_tmp genKey_tmp delKey_tmp
@@ -201,7 +188,7 @@ printf "\n------------------------\n%b------------------------\n\n" "$PATCH_REPO
 
 echo "repacking framework.jar classes"
 
-if apkeditor b -i frmwrk > /dev/null 2>&1; then
+if apkeditor b -i frmwrk &> build.log; then
     unzip frmwrk_out.apk 'classes*.dex' -d frmwrk > /dev/null 2>&1
 
     rm -rf frmwrk/.cache
@@ -220,5 +207,5 @@ if apkeditor b -i frmwrk > /dev/null 2>&1; then
     Dont forget to add liboemports_pif.so to /system/etc/public.libraries.txt
     "
 else
-    echo -e "${R}repack failed${NC}"
+    echo -e "${R}repack failed! check build.log${NC}"
 fi
