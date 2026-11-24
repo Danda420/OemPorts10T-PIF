@@ -33,7 +33,7 @@ fn curl_details() {
         "curl",
         &[
             "-s",
-            "https://raw.githubusercontent.com/Danda420/OemPorts10T-PIF/pif-apk/info.txt",
+            "https://raw.githubusercontent.com/Danda420/pif-actions/main/info.txt",
             "-o",
             PIF_INFO_TMP,
         ],
@@ -87,7 +87,7 @@ fn curl_pif() {
         "curl",
         &[
             "-s",
-            "https://raw.githubusercontent.com/Danda420/OemPorts10T-PIF/pif-apk/PIF.apk",
+            "https://raw.githubusercontent.com/Danda420/pif-actions/main/PIF.apk",
             "-o",
             PIF_APK,
         ],
