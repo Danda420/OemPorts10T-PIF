@@ -9,8 +9,6 @@ framework-level implementation to pass Play Integrity checks on Android ROMs.
   Patches system properties to match certified devices for GMS & Vending.
 - **Security Patch Spoof**  
   Spoofs Security Patch so that it passes strong integrity.
-- **Vending SDK 32 Spoof**  
-  Just incase. (this wont get enabled usually)
 - **PIF.apk Updater**  
   Automatically fetches the latest PIF.apk from this repository.
 - **Direct keybox.xml and pif.json support**  
